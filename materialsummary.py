@@ -115,7 +115,7 @@ minargs = 3
 
 if(len(sys.argv)<minargs):
   print "NOT ENOUGH ARGS PROVIDED, MIN ARGS IS "+str(minargs)
-  print "proper format is 'python proc_materials_summary.py <filename>'"
+  print "proper format is 'python materialssummary.py input.csv output.csv'"
   sys.exit()
 
 main(sys.argv[inputFileNameArg], sys.argv[outputFileNameArg])
