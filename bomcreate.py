@@ -2,6 +2,12 @@ import csv
 import yesno
 import youenter
 
+class Design:
+    def __init__(self, DWGNO, DP, DF):
+        self.DWGNO  = DWGNO
+        self.DP = DP
+        self.DF = DF
+        
 if(not yesno.yesno("Welcome to the Bill of Material Creator. Would you like to continue?(Y/N)")):
     exit()
 
