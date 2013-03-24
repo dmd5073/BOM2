@@ -29,7 +29,7 @@ while (yesno.yesno("Will you have mutiple drawing that you will be adding a Bill
             DF = raw_input ("Please Enter Your Design Factor:")
             youenter.youenter(DF, "Please Renter Your Design Factor:")
 
-            if yesno.yesno("Would you like to add another drawing?(Y/N"):
+            if not yesno.yesno("Would you like to add another drawing?(Y/N"):
                 break;
         print "WES ADDED THIS LINE"
     else:
