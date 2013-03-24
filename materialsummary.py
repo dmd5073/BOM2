@@ -1,9 +1,11 @@
 import csv
 import sys
 import math
+import yesno
 
 class record :
-    def __init__(self,qty,measurement,desc):
+    def __init__(self,markNo, qty,measurement,desc):
+        self.markNo = markNo
         try:
             self.qty = int(qty)
         except ValueError, TypeError:
@@ -11,7 +13,9 @@ class record :
 
         self.desc = str(desc)
         self.measurement = str(measurement)
-
+    def toString(self):
+        return "markNo:"+self.markNo+" qty:"+str(self.qty)+" measurement:"+self.measurement+" desc:"+self.desc
+        
 def main (inputfilename,outputfilename):
     print inputfilename
     print outputfilename
@@ -35,22 +39,14 @@ def main (inputfilename,outputfilename):
             continue
         markNo = text(line[markNoIdx]).upper()
 
-        print "        qty:"+str(qty)
-        print "measurement:"+str(measurement)
-        print "       desc:"+str(desc)
-        print "     markNo:"+str(markNo)
-        
-        myRecord = record(qty, measurement, desc)
+        myRecord = record(markNo, qty, measurement, desc)
+        print myRecord.toString();
         if(markNo not in fileData):
             print "new mark number"
             fileData[markNo] = myRecord 
         else:
             print "not new mark number"
-            decideOption("Which desc would you like to use?", myRecord.desc, fileData[markNo].desc)
-            decideOption("Which measurement would you like to use?", myRecord.measurement, fileData[markNo].measurement)
-
-            fileData[markNo].qty = fileData[markNo].qty + myRecord.qty
-        
+            resolveMarkNos(fileData, markNo, myRecord)
         print ""
 
     outputfile = open(outputfilename, 'w')
@@ -58,6 +54,35 @@ def main (inputfilename,outputfilename):
     for key in fileData:
         value = fileData[key]
         writer.writerow([value.qty, value.measurement, value.desc, key])
+
+def resolveMarkNos(fileData, markNo, newRecord):
+    print "old:"+fileData[markNo].toString()
+    print "new:"+newRecord.toString()
+    changeDecision = getInt("Would you like to:\n1) Merge the quantities and choose a description\n2) Change the new part's mark number\n3) Change the old part's mark number:", 1,3)
+    if changeDecision == 1:
+        newRecord.desc = decideOption("Which desc would you like to use?", newRecord.desc, fileData[markNo].desc)
+        newRecord.measurement = decideOption("Which measurement would you like to use?", newRecord.measurement, fileData[markNo].measurement)
+        fileData[markNo].qty = fileData[markNo].qty + newRecord.qty
+    elif changeDecision == 2:
+        print "Please enter your the markNo for the new part:"
+        markNo = sys.stdin.readline().strip()
+        if markNo in fileData:
+            print "That mark number already exists!"
+            return resolveMarkNos(fileData, markNo, newRecord)
+        fileData[markNo] = newRecord
+    elif changeDecision == 3:
+        print "Please enter your the markNo for the old part:"
+        fileData[markNo].markNo = sys.stdin.readline().strip()
+        if fileData[markNo].markNo in fileData:
+            print "That mark number already exists!"
+            oldRecord = fileData[markNo]
+            fileData[markNo] = newRecord
+            return resolveMarkNos(fileData, oldRecord.markNo, oldRecord)
+        fileData[fileData[markNo].markNo] = fileData[markNo]
+        fileData[markNo] = newRecord
+    else:
+        raise Exception("Got a response that shouldn't be possible")
+
 def text(string):
     string = str(string)
     if len(string)==0 or (string[0]!="'" and not (string[0]=='"' and string[len(string)-1]=='"')):
