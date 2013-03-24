@@ -19,7 +19,7 @@ print "Please provide the following design parameters."
 
 while True:
     if (yesno.yesno("Will your design information change throughout this project(Y/N)?")):
-
+        print "WES ADDED THIS LINE"
     else:
         print "I Work"
 
