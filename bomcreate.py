@@ -29,7 +29,7 @@ while (yesno.yesno("Will you have mutiple drawing that you will be adding a Bill
             DWGNO = raw_input("Please Enter the Drawing Number where the Bill of Material item will be located:")
             youenter.youenter(DWGNO, "Please Renter Your Drawing Number:")
 
-            DP = raw_input ("Please Enter Your Design Pressure:")
+            DP =  int(raw_input ("Please Enter Your Design Pressure:"))
             youenter.youenter(DP, "Please Renter Your Design Pressure:")
 
             DF = raw_input ("Please Enter Your Design Factor:")
